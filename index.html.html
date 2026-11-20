@@ -1,0 +1,556 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>七年級數學補考</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap">
+<style>
+/* Layout: one-column exam paper. Navy rule under the header and tinted sharp-cornered instruction box echo the printed 檢測卷; answer blanks are drawn as underlines; the result view reuses the paper with answers filled in. */
+:root{
+  --bg:#F2F4F8; --paper:#FFFFFF; --ink:#13233D; --muted:#566782; --line:#D3DAE6;
+  --navy:#002E63; --on-navy:#FFFFFF; --tint:#E8EEF7;
+  --pass:#17704A; --pass-bg:#E2F3EA; --fail:#B3261E; --fail-bg:#FBE8E6;
+  --font-sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --font-serif:"Noto Serif TC","PMingLiU","Songti TC",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1524; --paper:#152033; --ink:#E7EDF8; --muted:#9DACC5; --line:#2B3A54;
+  --navy:#8DB6F4; --on-navy:#0D1524; --tint:#1B2A44;
+  --pass:#62D69E; --pass-bg:#12301F; --fail:#FF9188; --fail-bg:#3A1B1B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1524; --paper:#152033; --ink:#E7EDF8; --muted:#9DACC5; --line:#2B3A54;
+  --navy:#8DB6F4; --on-navy:#0D1524; --tint:#1B2A44;
+  --pass:#62D69E; --pass-bg:#12301F; --fail:#FF9188; --fail-bg:#3A1B1B; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.75 var(--font-sans);
+  padding-block:16px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:720px;margin:0 auto}
+h1,h2,h3,p{margin:0}
+sup{font-size:.72em;line-height:0}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+button{font:inherit;cursor:pointer}
+
+/* header */
+.head{display:grid;gap:6px;padding-top:12px}
+.school{color:var(--muted);font-size:14px;letter-spacing:.04em}
+.head h1{font:700 34px/1.25 var(--font-serif);color:var(--navy);text-wrap:balance}
+.rule{height:0;border-top:1.25px solid var(--navy);margin-top:4px}
+.scope{font-weight:500;font-size:15px}
+.scope b{color:var(--navy)}
+.box{background:var(--tint);border:1.25px solid var(--navy);padding:10px 14px;font-size:15px;line-height:1.7;margin-top:14px}
+
+/* start */
+.card{background:var(--paper);border:1px solid var(--line);padding:20px 18px;margin-top:20px;display:grid;gap:14px}
+.card label.t{font-weight:700}
+.codein{font:700 30px/1.2 var(--font-sans);letter-spacing:.35em;font-variant-numeric:tabular-nums;width:100%;max-width:320px;padding:10px 12px;border:1.5px solid var(--navy);background:var(--paper);color:var(--ink);border-radius:0}
+.hint{color:var(--muted);font-size:14px}
+.err{color:var(--fail);font-weight:500;font-size:15px}
+.btn{border:1.5px solid var(--navy);background:var(--navy);color:var(--on-navy);padding:10px 20px;font-weight:700;border-radius:0;min-height:44px}
+.btn.ghost{background:transparent;color:var(--navy)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.notes{margin:0;padding-left:1.2em;color:var(--muted);font-size:14.5px;display:grid;gap:2px}
+.notice{background:var(--tint);border:1px solid var(--line);padding:8px 12px;font-size:14.5px;margin-top:14px}
+
+/* exam bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--paper);border-bottom:1.25px solid var(--navy);margin-top:12px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.bar .who{font-size:13px;color:var(--muted);line-height:1.3}
+.bar .who b{display:block;font-size:17px;color:var(--ink);letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.bar .prog{flex:1;min-width:0;text-align:center;font-size:14px;font-variant-numeric:tabular-nums}
+.bar .prog i{display:block;height:4px;background:var(--line);margin-top:4px;position:relative}
+.bar .prog i s{position:absolute;inset:0 auto 0 0;background:var(--navy);width:0;transition:width .2s}
+.bar .btn{padding:8px 16px;min-height:40px}
+
+/* questions */
+.sec{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 12px;margin:30px 0 12px;padding-bottom:6px;border-bottom:1.25px solid var(--navy)}
+.sec h2{font:700 20px/1.4 var(--font-serif);color:var(--navy)}
+.sec span{font-size:13.5px;color:var(--muted)}
+.q{background:var(--paper);border:1px solid var(--line);padding:14px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px}
+.q+.q{margin-top:10px}
+.qn{font:700 19px/1.5 var(--font-serif);color:var(--navy);min-width:1.4em}
+.qb{min-width:0}
+.lead{margin-bottom:6px}
+.items{display:flex;flex-wrap:wrap;gap:6px 26px}
+.it{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.no{color:var(--muted);font-size:14px}
+.m{white-space:nowrap;font-variant-numeric:tabular-nums}
+.tx{font-variant-numeric:tabular-nums}
+.eq{white-space:nowrap}
+.eqn{margin:2px 0 6px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.sub+.sub{margin-top:10px}
+.subh{display:flex;gap:8px;align-items:baseline;margin-bottom:4px}
+.bl{font:500 17px/1.4 var(--font-sans);font-variant-numeric:tabular-nums;width:5.8em;max-width:100%;text-align:center;padding:4px 4px 3px;color:var(--ink);background:var(--tint);border:0;border-bottom:1.5px solid var(--ink);border-radius:0;vertical-align:baseline}
+.tx .bl{width:3.8em}
+.tx .rv{min-width:2.4em}
+.bl:focus{background:var(--paper);outline:2px solid var(--navy);outline-offset:1px}
+.chs{display:grid;gap:8px;margin-top:2px}
+.chs.nlg{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.chs.pm{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.chs.sc{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.ch{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;cursor:pointer;min-height:44px;background:var(--paper)}
+.ch:has(input:checked){background:var(--tint);border-color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
+.ch input{margin:0;accent-color:var(--navy);width:18px;height:18px;flex:none}
+.mk{color:var(--navy);font-weight:700;flex:none}
+.cb{flex:1;min-width:0;font-variant-numeric:tabular-nums}
+.nl{width:100%;height:auto;display:block}
+.nl .ln,.nl .tk{stroke:var(--ink);fill:none}
+.nl .ln{stroke-width:1.5}
+.nl .tk{stroke-width:1}
+.nl text{fill:var(--ink);font:10px var(--font-sans);text-anchor:middle}
+.nl .pt{fill:var(--navy)}
+.nl .pl{fill:var(--navy);font-weight:700;font-size:13px}
+
+/* confirm sheet */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;padding-top:12px;padding-bottom:max(12px,env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--paper);border-top:1.25px solid var(--navy);box-shadow:0 -8px 24px rgba(0,0,0,.12)}
+.sheet .in{max-width:720px;margin:0 auto;display:grid;gap:10px}
+.submitrow{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--paper);border:1px solid var(--line)}
+
+/* result */
+.band{margin-top:18px;padding:18px 18px 16px;border:1.5px solid;display:grid;gap:4px}
+.band.pass{background:var(--pass-bg);border-color:var(--pass)}
+.band.fail{background:var(--fail-bg);border-color:var(--fail)}
+.verdict{font:700 44px/1.15 var(--font-serif)}
+.pass .verdict{color:var(--pass)}
+.fail .verdict{color:var(--fail)}
+.score{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.meta{font-size:14.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted);margin-top:10px}
+.qs{display:flex;justify-content:space-between;gap:8px;align-items:baseline;grid-column:2;font-size:13.5px;color:var(--muted);margin-top:-2px}
+.rv{display:inline-block;min-width:3.2em;text-align:center;padding:0 6px;font-weight:700;font-variant-numeric:tabular-nums;border-bottom:1.5px solid;margin-inline:2px}
+.rv.ok{color:var(--pass);border-color:var(--pass)}
+.rv.no{color:var(--fail);border-color:var(--fail)}
+.rv.no s{text-decoration-thickness:2px}
+.rv em{font-style:normal;font-weight:400;font-size:.85em}
+.rvch{display:grid;gap:6px;margin-top:2px}
+.rvrow{display:flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid}
+.rvrow.ok{border-color:var(--pass);background:var(--pass-bg)}
+.rvrow.no{border-color:var(--fail);background:var(--fail-bg)}
+.rvrow .tag{flex:none;font-size:12.5px;font-weight:700;white-space:nowrap}
+.rvrow.ok .tag{color:var(--pass)}
+.rvrow.no .tag{color:var(--fail)}
+.rvrow:has(.nl){flex-wrap:wrap}
+.rvrow:has(.nl) .cb{flex:1 0 100%}
+.foot{margin-top:24px;color:var(--muted);font-size:14px}
+@media (max-width:420px){.head h1{font-size:30px}.verdict{font-size:38px}.codein{font-size:26px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<!-- 首頁 -->
+<section id="v-start">
+  <header class="head">
+    <p class="school">臺南市立大灣高級中學　115 學年度第一學期　七年級　數學科</p>
+    <h1>補考測驗</h1>
+    <div class="rule"></div>
+    <p class="scope">※ 範圍：<b>第一冊 1-1～1-4</b>　｜　填充題（62 格）</p>
+  </header>
+  <div class="box">† 說明：第 1 題至第 23 題，每格完全答對給 1 分，未完全答對不給分。滿分 62 分，<b>57 分（含）以上通過</b>。</div>
+
+  <form class="card" id="f-start" autocomplete="off" novalidate>
+    <label class="t" for="code">班級座號（五碼）</label>
+    <input class="codein" id="code" name="code" type="text" inputmode="numeric" maxlength="5" placeholder="10212" autocomplete="off" aria-describedby="code-hint code-err">
+    <p class="hint" id="code-hint">例：10212</p>
+    <p class="err" id="code-err" role="alert" hidden></p>
+    <div class="row" id="start-row"><button class="btn" type="submit" id="btn-start">開始測驗</button></div>
+    <div id="confirm-code" hidden style="display:grid;gap:10px">
+      <p>你輸入的班級座號是 <b id="cc-val" style="font-size:22px;letter-spacing:.15em"></b>，確認後開始作答。</p>
+      <div class="row"><button class="btn" type="button" id="btn-go">確認，開始</button><button class="btn ghost" type="button" id="btn-redo">重新輸入</button></div>
+    </div>
+    <ul class="notes">
+      <li>填空題請直接輸入數字；負數請輸入負號，例如 -5。</li>
+      <li>選擇題請點選答案。每格都要作答，空白視為答錯。</li>
+      <li>作答進度會暫存在這個瀏覽器，不小心關掉可輸入同一組號碼繼續。</li>
+      <li>交卷後會顯示是否通過，並公布全部題目與答案，請截圖保存。</li>
+    </ul>
+  </form>
+</section>
+
+<!-- 作答 -->
+<section id="v-exam" hidden>
+  <header class="head">
+    <p class="school">臺南市立大灣高級中學　115 學年度第一學期　七年級　數學科</p>
+    <h1>補考測驗</h1>
+    <div class="rule"></div>
+    <p class="scope">※ 範圍：<b>第一冊 1-1～1-4</b>　｜　填充題（62 格）</p>
+  </header>
+  <div class="box">† 說明：第 1 題至第 23 題，每格完全答對給 1 分，未完全答對不給分。<b>57 分（含）以上通過</b>。</div>
+  <p class="notice" id="resumed" hidden>已還原你上次未交卷的作答。</p>
+  <div class="bar" id="bar">
+    <div class="who">班級座號<b id="bar-code"></b></div>
+    <div class="prog"><span id="prog-t">已作答 0 / 62 格</span><i><s id="prog-b"></s></i></div>
+    <button class="btn" type="button" id="btn-submit">交卷</button>
+  </div>
+  <div id="paper"></div>
+  <div class="submitrow">
+    <span class="hint" id="end-hint">全部作答完請按「交卷」。</span>
+    <button class="btn" type="button" id="btn-submit2">交卷</button>
+  </div>
+</section>
+
+<!-- 成績 -->
+<section id="v-result" hidden>
+  <header class="head">
+    <p class="school">臺南市立大灣高級中學　115 學年度第一學期　七年級　數學科</p>
+    <h1>補考結果</h1>
+    <div class="rule"></div>
+  </header>
+  <div class="band" id="band" role="status"></div>
+  <p class="foot" style="margin-top:12px">請截圖保存本畫面（含班級座號與成績），並往下截圖題目與答案複習。</p>
+  <div class="sec"><h2>題目與答案</h2><span id="rv-sum"></span></div>
+  <div class="legend"><span><b style="color:var(--pass)">綠色底線</b>　答對或正確答案</span><span><b style="color:var(--fail)">紅色刪除線</b>　你的作答（答錯）</span></div>
+  <div id="review" style="margin-top:10px"></div>
+  <p class="foot">以上為本次測驗全部題目與答案。</p>
+</section>
+
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="in">
+    <p id="sheet-t" style="font-weight:500"></p>
+    <div class="row"><button class="btn ghost" type="button" id="sheet-back">回去作答</button><button class="btn" type="button" id="sheet-ok">確定交卷</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.lang='zh-Hant';
+
+/* ---------- 亂數 ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R=Math.random;
+function ri(a,b){return a+Math.floor(R()*(b-a+1))}
+function pick(a){return a[Math.floor(R()*a.length)]}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(R()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function perms(a){if(a.length<=1)return[a];var out=[];a.forEach(function(x,i){perms(a.filter(function(_,j){return j!==i})).forEach(function(p){out.push([x].concat(p))})});return out}
+function sortNum(a){return a.slice().sort(function(x,y){return x-y})}
+
+/* ---------- 格式 ---------- */
+var MN='−', MARKS='①②③④⑤⑥';
+function f(n){return n<0?MN+(-n):String(n)}
+function pr(n){return n<0?'('+MN+(-n)+')':String(n)}
+function sg(n){return '('+(n<0?MN:'+')+Math.abs(n)+')'}
+function sup(b,e){return b+'<sup>'+e+'</sup>'}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function disp(a){return String(a).replace('-',MN)}
+function NUM(a){return {kind:'num',answer:String(a)}}
+function CH(ans,opts,cls){return {kind:'ch',answer:ans,cls:cls||'',opts:opts.map(function(o,i){return {k:o.k,h:o.h,mk:MARKS[i]}})}}
+/* kind: undefined=算式(含=), 't'=文字(含=), 'n'=文字(不含=) */
+function it(lab,html,i,kind){
+  var cls=kind?'tx':'m';
+  return '<div class="it"><span class="no">('+lab+')</span><span class="'+cls+'">'+html+'</span><span class="eq">'+(kind==='n'?'':'=&nbsp;')+'{'+i+'}</span></div>';
+}
+function items(){return '<div class="items">'+Array.prototype.join.call(arguments,'')+'</div>'}
+function lead(t){return '<p class="lead">'+t+'</p>'}
+function sub(lab,html,i){return '<div class="sub"><div class="subh"><span class="no">('+lab+')</span><span class="m">'+html+'</span></div>{'+i+'}</div>'}
+function sci(d,e){ /* d='628', e=4 -> 6.28×10^4 的十進位寫法 */
+  var n=d.length-1,pow=e-n,k;
+  if(pow>=0)return d+new Array(pow+1).join('0');
+  k=-pow;
+  if(k>=d.length)return '0.'+new Array(k-d.length+1).join('0')+d;
+  return d.slice(0,d.length-k)+'.'+d.slice(d.length-k);
+}
+function dig(){return ri(1,9)}
+
+/* 數線選項 */
+function nlSVG(A,B){
+  var W=320,H=66,x0=18,x1=302,st=(x1-x0)/12;
+  function X(v){return x0+(v+6)*st}
+  var g='<svg class="nl" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="A 在 '+f(A)+'，B 在 '+f(B)+'"><line class="ln" x1="'+(x0-8)+'" y1="40" x2="'+(x1+8)+'" y2="40"/>';
+  for(var v=-6;v<=6;v++){g+='<line class="tk" x1="'+X(v)+'" y1="35" x2="'+X(v)+'" y2="45"/><text x="'+X(v)+'" y="60">'+f(v)+'</text>'}
+  [['A',A],['B',B]].forEach(function(p){g+='<circle class="pt" cx="'+X(p[1])+'" cy="40" r="5"/><text class="pl" x="'+X(p[1])+'" y="24">'+p[0]+'</text>'});
+  return g+'</svg>';
+}
+
+/* ---------- 題庫（依 A、B 卷題型；ban 為 A、B 卷已用過的數字組合，不會再出現） ---------- */
+var SECTIONS=[
+{title:'1-1　正數與負數',qs:[
+ {ban:['5,4','7,6'],gen:function(){var a=ri(2,12),b=ri(2,12);return{sigs:[a+','+b],
+   stem:lead('回答下列問題：')+items(it(1,'比 0 還要多 '+a+' 的數',0,'t'),it(2,'比 0 還要少 '+b+' 的數',1,'t')),
+   blanks:[NUM(a),NUM(-b)]}}},
+ {ban:['2,5','3,4'],gen:function(){var a=ri(1,5),b=ri(1,5);while(b===a)b=ri(1,5);
+   var c=shuffle([{k:'ok',A:a,B:-b},{k:'x1',A:-a,B:b},{k:'x2',A:-b,B:a},{k:'x3',A:a,B:-(b+1)}]);
+   return{sigs:[a+','+b],stem:lead('在數線上，標示出 A('+f(a)+')、B('+f(-b)+') 兩點。下列哪一個數線標示正確？')+'{0}',
+   blanks:[CH('ok',c.map(function(o){return{k:o.k,h:nlSVG(o.A,o.B)}}),'nlg')]}}},
+ {ban:['1,3,5','2,4,6','p6,4','p5,7'],gen:function(){
+   var s1=shuffle([1,2,3,4,5,6,7,8,9]).slice(0,3),v1=s1.map(function(x){return -x});
+   var p=ri(1,9),q=ri(1,9),v2=[p,-q,0];
+   function mk(vals){var d;do{d=shuffle(vals)}while(d.join()===sortNum(vals).join());
+     var all=shuffle(perms(vals).map(function(pm){return{k:pm.join(','),h:pm.map(f).join(' &lt; ')}}));
+     return{disp:d,blank:CH(sortNum(vals).join(','),all,'pm')}}
+   var a=mk(v1),b=mk(v2);
+   return{sigs:[sortNum(s1).join(','),'p'+p+','+q],
+     stem:lead('比較下列各組數的大小關係（選出由小到大的排列）：')+sub(1,a.disp.map(f).join('、'),0)+sub(2,b.disp.map(f).join('、'),1),
+     blanks:[a.blank,b.blank]}}},
+ {ban:['8','9'],gen:function(){var a=ri(2,19);return{sigs:[String(a)],
+   stem:lead('回答下列問題：')+items(it(1,a+' 的相反數',0,'t'),it(2,f(-a)+' 的相反數',1,'t'),it(3,'0 的相反數',2,'t')),
+   blanks:[NUM(-a),NUM(a),NUM(0)]}}},
+ {ban:['6','7'],gen:function(){var a=ri(2,19);return{sigs:[String(a)],
+   stem:lead('回答下列問題：')+items(it(1,a+' 的絕對值',0,'t'),it(2,f(-a)+' 的絕對值',1,'t'),it(3,'0 的絕對值',2,'t')),
+   blanks:[NUM(a),NUM(a),NUM(0)]}}}
+]},
+{title:'1-2　正負數的加減',qs:[
+ {ban:['4,3','5,2'],gen:function(){var a=ri(3,9),b=ri(2,a-1);return{sigs:[a+','+b],
+   stem:lead('計算下列各式：')+items(it(1,sg(a)+' + '+sg(b),0),it(2,sg(-a)+' + '+sg(-b),1),it(3,sg(a)+' + '+sg(-b),2),it(4,sg(-a)+' + '+sg(b),3)),
+   blanks:[NUM(a+b),NUM(-a-b),NUM(a-b),NUM(b-a)]}}},
+ {ban:['37,64','48,53','15,68','24,79'],gen:function(){
+   var x=ri(12,49),y=ri(50,89),p=ri(11,29),q=ri(55,90),r=100-q;
+   return{sigs:[x+','+y,p+','+q],
+   stem:lead('計算下列各式：')+items(it(1,pr(-x)+' + '+y+' + '+x,0),it(2,p+' + '+pr(-q)+' + '+pr(-r),1)),
+   blanks:[NUM(y),NUM(p-100)]}}},
+ {ban:['3,7','2,6'],gen:function(){var a=ri(1,6),b=a+ri(2,6);return{sigs:[a+','+b],
+   stem:lead('計算下列各式：')+items(it(1,sg(a)+' − '+sg(b),0),it(2,sg(-a)+' − '+sg(-b),1),it(3,sg(a)+' − '+sg(-b),2),it(4,sg(-a)+' − '+sg(b),3)),
+   blanks:[NUM(a-b),NUM(b-a),NUM(a+b),NUM(-a-b)]}}},
+ {ban:['8,3,4','7,4,5'],gen:function(){var b=ri(2,7),c=b+ri(1,2),a=ri(6,12);return{sigs:[a+','+b+','+c],
+   stem:lead('計算下列各式：')+items(it(1,a+' + ('+b+' + '+c+')',0),it(2,a+' + ('+b+' − '+c+')',1),it(3,a+' − ('+b+' + '+c+')',2),it(4,a+' − ('+b+' − '+c+')',3)),
+   blanks:[NUM(a+b+c),NUM(a+b-c),NUM(a-b-c),NUM(a-b+c)]}}},
+ {ban:['14,39,22','16,45,28','16,27,13,28','18,32,14,25'],gen:function(){
+   var a=ri(10,30),b=ri(30,50),c=ri(10,30),p=ri(10,30),q=ri(20,40),r=ri(10,20),s=ri(20,30);
+   return{sigs:[a+','+b+','+c,p+','+q+','+r+','+s],
+   stem:lead('計算下列各式：')+items(it(1,pr(-a)+' − '+pr(-b)+' + '+pr(-c),0),it(2,p+' − '+q+' + '+pr(-r)+' − '+pr(-s),1)),
+   blanks:[NUM(-a+b-c),NUM(p-q-r+s)]}}},
+ {ban:['4,10','2,8'],gen:function(){var a=ri(-6,8),len=pick([4,6,8,10,12,14]),b=a+len;return{sigs:[a+','+b],
+   stem:lead('在數線上，若 A('+f(a)+')、B('+f(b)+')，且 M 為 <span class="ov">AB</span> 的中點：')+items(it(1,'<span class="ov">AB</span>',0),it(2,'M 點的坐標為',1,'n')),
+   blanks:[NUM(len),NUM((a+b)/2)]}}}
+]},
+{title:'1-3　正負數的乘除',qs:[
+ {ban:['3,4','2,5'],gen:function(){var a=ri(2,9),b=ri(2,9);return{sigs:[a+','+b],
+   stem:lead('計算下列各式：')+items(it(1,sg(a)+' × '+sg(b),0),it(2,sg(-a)+' × '+sg(b),1),it(3,sg(a)+' × '+sg(-b),2),it(4,sg(-a)+' × '+sg(-b),3)),
+   blanks:[NUM(a*b),NUM(-a*b),NUM(-a*b),NUM(a*b)]}}},
+ {ban:['2,3,5','2,4,5','1,2,3,4','1,2,3,5'],gen:function(){
+   var t=shuffle([2,3,4,5,6]).slice(0,3),u=shuffle([2,3,4,5,6]).slice(0,3),w=[1].concat(shuffle(u));
+   return{sigs:[sortNum(t).join(','),sortNum(w).join(',')],
+   stem:lead('計算下列各式：')+items(it(1,t.map(function(x){return pr(-x)}).join(' × '),0),it(2,w.map(function(x){return pr(-x)}).join(' × '),1)),
+   blanks:[NUM(-t[0]*t[1]*t[2]),NUM(w[0]*w[1]*w[2]*w[3])]}}},
+ {ban:['83','67','37','49'],gen:function(){var x=ri(11,99),y=ri(11,99);return{sigs:[String(x),String(y)],
+   stem:lead('計算下列各式：')+items(it(1,pr(-125)+' × '+x+' × 8',0),it(2,y+' × '+pr(-25)+' × 4',1)),
+   blanks:[NUM(-1000*x),NUM(-100*y)]}}},
+ {ban:['12,6','15,5'],gen:function(){var b=ri(2,9),q=ri(2,9),a=b*q;return{sigs:[a+','+b],
+   stem:lead('計算下列各式：')+items(it(1,sg(a)+' ÷ '+sg(b),0),it(2,sg(-a)+' ÷ '+sg(b),1),it(3,sg(a)+' ÷ '+sg(-b),2),it(4,sg(-a)+' ÷ '+sg(-b),3)),
+   blanks:[NUM(q),NUM(-q),NUM(-q),NUM(q)]}}},
+ {ban:['8,3,2','6,4,3'],gen:function(){var a=ri(2,9),b=ri(2,9),c=ri(2,9),d=b+c;return{sigs:[a+','+b+','+c],
+   stem:lead('計算下列各式：')+items(it(1,a+' × ('+b+' + '+c+')',0),it(2,a+' × ('+b+' − '+d+')',1),it(3,pr(-a)+' × ('+b+' − '+d+')',2)),
+   blanks:[NUM(a*(b+c)),NUM(-a*c),NUM(a*c)]}}},
+ {ban:['7,54,36','7,34,4','8,63,27','8,42,2'],gen:function(){
+   var a=ri(3,9),S=pick([80,90,100]),x=ri(21,S-21),y=S-x,v=ri(2,9),D=pick([20,30,40,50]),u=v+D;
+   return{sigs:[a+','+x+','+y,a+','+u+','+v],
+   stem:lead('計算下列各式：')+items(it(1,a+' × '+x+' + '+a+' × '+y,0),it(2,a+' × '+u+' − '+a+' × '+v,1)),
+   blanks:[NUM(a*S),NUM(a*D)]}}},
+ {ban:['5,4,3,7,6','4,5,2,8,5','48,24,8,2','36,30,9,4'],gen:function(){
+   var a=ri(2,6),b=ri(2,9),c=ri(2,6),d=ri(3,9),e=ri(2,9);
+   var t=ri(2,6),s=ri(2,6),r=s+t,k=ri(2,9),q=t*k,p=ri(20,60);
+   return{sigs:[a+','+b+','+c+','+d+','+e,p+','+q+','+r+','+s],
+   stem:lead('計算下列各式：')+items(it(1,pr(-a)+' × '+b+' − [ '+pr(-c)+' × '+d+' + '+e+' ]',0),it(2,pr(-p)+' − [ '+q+' ÷ ('+r+' − '+s+') ]',1)),
+   blanks:[NUM(-a*b+c*d-e),NUM(-p-k)]}}}
+]},
+{title:'1-4　指數記法與科學記號',qs:[
+ {ban:['5','4'],gen:function(){var a=pick([2,3,6,7,8,9]),c=a*a*a;return{sigs:[String(a)],
+   stem:lead('計算下列各式：')+items(it(1,sup(a,3),0),it(2,sup('('+MN+a+')',3),1),it(3,MN+sup(a,3),2)),
+   blanks:[NUM(c),NUM(-c),NUM(-c)]}}},
+ {ban:['62442','83579'],gen:function(){var d=[dig(),dig(),dig(),dig(),dig()];
+   return{sigs:[d.join('')],
+   stem:lead('已知')+'<p class="eqn">'+d.slice(0,3).join('')+'.'+d.slice(3).join('')+' = a × '+sup(10,2)+' + b × '+sup(10,1)+' + c × '+sup(10,0)+' + d × '+sup(10,MN+'1')+' + e × '+sup(10,MN+'2')+'，</p>'
+     +'<p>則 a = {0}，b = {1}，c = {2}，d = {3}，e = {4}。</p>',
+   blanks:d.map(NUM)}}},
+ {ban:['543','826','p789','p456'],gen:function(){
+   var x=dig(),y=dig(),z=dig(),u=dig(),v=dig(),w=dig();
+   var o1=shuffle([{k:'ok',h:x+'.'+y+z+' × '+sup(10,2)},{k:'a',h:x+'.'+y+z+' × '+sup(10,3)},{k:'b',h:''+x+y+'.'+z+' × '+sup(10,1)},{k:'c',h:'0.'+x+y+z+' × '+sup(10,3)}]);
+   var o2=shuffle([{k:'ok',h:u+'.'+v+w+' × '+sup(10,MN+'3')},{k:'a',h:u+'.'+v+w+' × '+sup(10,MN+'2')},{k:'b',h:u+'.'+v+w+' × '+sup(10,'3')},{k:'c',h:''+u+v+'.'+w+' × '+sup(10,MN+'4')}]);
+   return{sigs:[''+x+y+z,'p'+u+v+w],
+   stem:lead('將下列各數寫成科學記號（科學記號形如 a × '+sup(10,'n')+'，其中 1 ≤ a &lt; 10，請選出正確的一個）：')+sub(1,''+x+y+z,0)+sub(2,'0.00'+u+v+w,1),
+   blanks:[CH('ok',o1,'sc'),CH('ok',o2,'sc')]}}},
+ {ban:['u628','u415','v2718,6','v3141,5'],gen:function(){
+   var d1=''+dig()+dig()+dig(),d2=''+dig()+dig()+dig()+dig(),e2=ri(4,7);
+   var m1=d1[0]+'.'+d1.slice(1),m2=d2[0]+'.'+d2.slice(1);
+   return{sigs:['u'+d1,'v'+d2+','+e2],
+   stem:lead('計算下列各式：')+items(it(1,m1+' × '+sup(10,4),0),it(2,m2+' × '+sup(10,MN+e2),1)),
+   blanks:[NUM(sci(d1,4)),NUM(sci(d2,-e2))]}}},
+ {ban:['5,20','8,15','7,48','4,35'],gen:function(){
+   var d1=ri(2,9),n=ri(12,40),d2=ri(2,9),m=ri(30,60);
+   return{sigs:[d1+','+n,d2+','+m],
+   stem:lead('回答下列問題：')+'<div class="items" style="display:grid;gap:6px">'
+     +'<div class="it"><span class="no">(1)</span><span class="tx">'+d1+' × '+sup(10,n)+' 為 {0} 位數。</span></div>'
+     +'<div class="it"><span class="no">(2)</span><span class="tx">'+d2+' × '+sup(10,MN+m)+' 在小數點以下第 {1} 位始出現非零數字。</span></div></div>',
+   blanks:[NUM(n+1),NUM(m)]}}}
+]}
+];
+
+function makeQ(def){
+  for(var i=0;i<300;i++){var q=def.gen();if(!q.sigs.some(function(s){return def.ban.indexOf(s)>=0}))return q}
+  return def.gen();
+}
+function build(seed){
+  R=mulberry32(seed);
+  var n=0,base=0;
+  var secs=SECTIONS.map(function(sec){
+    var qs=sec.qs.map(function(def){var q=makeQ(def);q.no=++n;q.base=base;base+=q.blanks.length;return q});
+    return{title:sec.title,qs:qs};
+  });
+  return{secs:secs,total:base,nq:n};
+}
+
+/* ---------- 批改 ---------- */
+function norm(s){
+  s=String(s==null?'':s).trim()
+    .replace(/[０-９]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248)})
+    .replace(/[－−–—﹣‐]/g,'-').replace(/＋/g,'+').replace(/．/g,'.').replace(/[,，\s]/g,'');
+  var m=/^([+-]?)(\d*)(?:\.(\d*))?$/.exec(s);
+  if(!m||(m[2]===''&&(m[3]===undefined||m[3]===''))) return null;
+  var ip=m[2].replace(/^0+/,'')||'0',fp=(m[3]||'').replace(/0+$/,'');
+  var neg=m[1]==='-'&&(ip!=='0'||fp!=='');
+  return (neg?'-':'')+ip+(fp?'.'+fp:'');
+}
+function isRight(b,a){
+  if(b.kind==='ch')return a===b.answer;
+  var x=norm(a);return x!==null&&x===norm(b.answer);
+}
+
+/* ---------- 畫面 ---------- */
+function $(id){return document.getElementById(id)}
+var S=null;
+var PASS=57;
+
+function blankExam(q,b,i,gi,ans){
+  if(b.kind==='num'){
+    return '<input class="bl" id="b'+gi+'" type="text" inputmode="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="第 '+q.no+' 題第 '+(i+1)+' 格" data-i="'+gi+'" value="'+esc(ans[gi]||'')+'">';
+  }
+  return '<div class="chs '+b.cls+'" role="radiogroup" aria-label="第 '+q.no+' 題選擇">'+b.opts.map(function(o){
+    return '<label class="ch"><input type="radio" name="b'+gi+'" value="'+o.k+'"'+(ans[gi]===o.k?' checked':'')+'><span class="mk">'+o.mk+'</span><span class="cb">'+o.h+'</span></label>';
+  }).join('')+'</div>';
+}
+function blankReview(b,a){
+  var ok=isRight(b,a);
+  if(b.kind==='num'){
+    var c='<span class="rv ok">'+esc(disp(b.answer))+'</span>';
+    if(ok)return c;
+    var y=String(a||'').trim();
+    return '<span class="rv no">'+(y?'<s>'+esc(y)+'</s>':'<em>未作答</em>')+'</span>'+c;
+  }
+  var co=b.opts.filter(function(o){return o.k===b.answer})[0],yo=b.opts.filter(function(o){return o.k===a})[0];
+  return '<div class="rvch"><div class="rvrow ok"><span class="tag">✓ 正確答案</span><span class="mk">'+co.mk+'</span><span class="cb">'+co.h+'</span></div>'
+    +(ok?'':'<div class="rvrow no"><span class="tag">✗ 你的作答</span>'+(yo?'<span class="mk">'+yo.mk+'</span><span class="cb">'+yo.h+'</span>':'<em>未作答</em>')+'</div>')+'</div>';
+}
+function stemHTML(q,mode,ans){
+  return q.stem.replace(/\{(\d+)\}/g,function(_,i){
+    i=+i;var b=q.blanks[i],gi=q.base+i;
+    return mode==='exam'?blankExam(q,b,i,gi,ans):blankReview(b,ans[gi]);
+  });
+}
+function paperHTML(mode,ans,res){
+  return S.exam.secs.map(function(sec){
+    var first=sec.qs[0],last=sec.qs[sec.qs.length-1],cnt=sec.qs.reduce(function(s,q){return s+q.blanks.length},0);
+    var h='<div class="sec"><h2>'+sec.title+'</h2><span>第 '+first.no+'–'+last.no+' 題　'+cnt+' 格</span></div>';
+    h+=sec.qs.map(function(q){
+      var got='';
+      if(res){var g=q.blanks.filter(function(b,i){return res.ok[q.base+i]}).length;got='<div class="qs"><span></span><span>本題 '+g+' / '+q.blanks.length+' 分</span></div>'}
+      return '<article class="q" id="q'+q.no+'"><div class="qn">'+q.no+'</div><div class="qb">'+stemHTML(q,mode,ans)+'</div>'+got+'</article>';
+    }).join('');
+    return h;
+  }).join('');
+}
+
+function key(code){return 'dawan-makeup-v1:'+code}
+function save(){try{localStorage.setItem(key(S.code),JSON.stringify({seed:S.seed,ans:S.ans}))}catch(e){}}
+function load(code){try{var v=JSON.parse(localStorage.getItem(key(code))||'null');return v&&typeof v.seed==='number'&&Array.isArray(v.ans)?v:null}catch(e){return null}}
+function clear(code){try{localStorage.removeItem(key(code))}catch(e){}}
+
+function answered(){return S.ans.filter(function(a){return String(a||'').trim()!==''}).length}
+function updateProgress(){
+  var n=answered();
+  $('prog-t').textContent='已作答 '+n+' / '+S.exam.total+' 格';
+  $('prog-b').style.width=(100*n/S.exam.total)+'%';
+}
+function show(id){['v-start','v-exam','v-result'].forEach(function(v){$(v).hidden=v!==id});window.scrollTo(0,0)}
+
+function startExam(code){
+  var saved=load(code),seed=saved?saved.seed:(Math.random()*4294967296)>>>0;
+  var exam=build(seed);
+  var ans=saved&&saved.ans.length===exam.total?saved.ans:new Array(exam.total).fill('');
+  S={code:code,seed:seed,exam:exam,ans:ans};
+  $('bar-code').textContent=code;
+  $('paper').innerHTML=paperHTML('exam',S.ans);
+  $('resumed').hidden=!(saved&&answered()>0);
+  save();updateProgress();show('v-exam');
+}
+
+function firstEmpty(){for(var i=0;i<S.ans.length;i++){if(String(S.ans[i]||'').trim()==='')return i}return -1}
+function gotoBlank(i){
+  var el=$('b'+i)||document.querySelector('input[name="b'+i+'"]');
+  if(!el)return;
+  var box=el.closest('.q');if(box)box.scrollIntoView({block:'center',behavior:'smooth'});
+  if(el.type==='text')setTimeout(function(){el.focus({preventScroll:true})},250);
+}
+function askSubmit(){
+  var e=S.exam.total-answered();
+  $('sheet-t').textContent=e>0?'還有 '+e+' 格沒作答，空白視為答錯。交卷後就不能修改，確定要交卷嗎？':'全部 '+S.exam.total+' 格都已作答。交卷後就不能修改，確定要交卷嗎？';
+  $('sheet-back').textContent=e>0?'去找空白的格子':'回去檢查';
+  $('sheet').hidden=false;
+}
+function closeSheet(){$('sheet').hidden=true}
+
+function submit(){
+  closeSheet();
+  var ok=[],score=0;
+  S.exam.secs.forEach(function(sec){sec.qs.forEach(function(q){q.blanks.forEach(function(b,i){var r=isRight(b,S.ans[q.base+i]);ok[q.base+i]=r;if(r)score++})})});
+  var pass=score>=PASS,d=new Date();
+  function p2(n){return n<10?'0'+n:''+n}
+  var when=d.getFullYear()+'/'+p2(d.getMonth()+1)+'/'+p2(d.getDate())+' '+p2(d.getHours())+':'+p2(d.getMinutes());
+  var band=$('band');band.className='band '+(pass?'pass':'fail');
+  band.innerHTML='<div class="verdict">'+(pass?'通過':'未通過')+'</div>'
+    +'<div class="score">得分 '+score+' / '+S.exam.total+' 分</div>'
+    +'<div class="meta">通過標準 '+PASS+' 分'+(pass?'':'，還差 '+(PASS-score)+' 分')+'</div>'
+    +'<div class="meta">班級座號 '+esc(S.code)+'　｜　交卷時間 '+when+'</div>';
+  $('rv-sum').textContent='共 '+S.exam.nq+' 題　答對 '+score+' 格　答錯 '+(S.exam.total-score)+' 格';
+  $('review').innerHTML=paperHTML('review',S.ans,{ok:ok});
+  clear(S.code);
+  show('v-result');
+  window.__last={score:score,pass:pass};
+}
+
+/* ---------- 事件 ---------- */
+function cleanCode(v){return String(v).replace(/[０-９]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-65248)}).replace(/\s/g,'')}
+var codeEl=$('code'),errEl=$('code-err'),pending=null;
+function resetStart(){$('confirm-code').hidden=true;$('start-row').hidden=false;codeEl.readOnly=false;pending=null}
+$('f-start').addEventListener('submit',function(e){
+  e.preventDefault();
+  var c=cleanCode(codeEl.value);
+  if(!/^\d{5}$/.test(c)){errEl.textContent='請輸入五位數字的班級座號，例如 10212。';errEl.hidden=false;codeEl.focus();return}
+  errEl.hidden=true;pending=c;codeEl.value=c;codeEl.readOnly=true;
+  $('cc-val').textContent=c;$('start-row').hidden=true;$('confirm-code').hidden=false;$('btn-go').focus();
+});
+codeEl.addEventListener('input',function(){errEl.hidden=true});
+$('btn-redo').addEventListener('click',function(){resetStart();codeEl.focus();codeEl.select()});
+$('btn-go').addEventListener('click',function(){if(pending)startExam(pending)});
+
+function onAnswer(e){
+  var t=e.target,i;
+  if(t.classList&&t.classList.contains('bl')){i=+t.dataset.i;S.ans[i]=t.value}
+  else if(t.type==='radio'){i=+t.name.slice(1);S.ans[i]=t.value}
+  else return;
+  save();updateProgress();
+}
+$('paper').addEventListener('input',onAnswer);
+$('paper').addEventListener('change',onAnswer);
+$('paper').addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&e.target.classList.contains('bl')){
+    e.preventDefault();
+    var all=[].slice.call(document.querySelectorAll('#paper .bl')),k=all.indexOf(e.target);
+    if(all[k+1])all[k+1].focus();
+  }
+});
+$('btn-submit').addEventListener('click',askSubmit);
+$('btn-submit2').addEventListener('click',askSubmit);
+$('sheet-back').addEventListener('click',function(){closeSheet();var i=firstEmpty();if(i>=0)gotoBlank(i)});
+$('sheet-ok').addEventListener('click',submit);
+
+window.__test={build:build,norm:norm,isRight:isRight,sci:sci,state:function(){return S},SECTIONS:SECTIONS};
+})();
+</script>
+
+</body></html>
